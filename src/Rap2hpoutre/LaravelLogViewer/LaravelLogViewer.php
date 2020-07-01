@@ -135,6 +135,29 @@ class LaravelLogViewer
     }
 
     /**
+     * Makes json records prettier if they exists in string.
+     *
+     * @param $text
+     * @return mixed
+     */
+    private function prettyJson(&$text)
+    {
+        preg_match($this->pattern->getPattern('json'), $text, $jsonRecords);
+        $prettyRecords = [];
+
+        foreach ($jsonRecords as $jsonRecord) {
+            $prettyRecords[] = json_encode(
+                json_decode($jsonRecord),
+                JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE
+            );
+
+            $text = str_replace($jsonRecord, '', $text);
+        }
+
+        return $prettyRecords;
+    }
+
+    /**
      * @return array
      */
     public function all()
@@ -178,6 +201,16 @@ class LaravelLogViewer
                             continue;
                         }
 
+                        $prettyRecords = $this->prettyJson($current[4]);
+
+                        $stack = '';
+                        $stack = preg_replace("/^\n*/", '', $log_data[$i]);
+                        $stack .= "\n";
+
+                        foreach ($prettyRecords as $prettyRecord) {
+                           $stack .= $prettyRecord;
+                        }
+
                         $log[] = array(
                             'context' => $current[3],
                             'level' => $level,
@@ -187,7 +220,7 @@ class LaravelLogViewer
                             'date' => $current[1],
                             'text' => $current[4],
                             'in_file' => isset($current[5]) ? $current[5] : null,
-                            'stack' => preg_replace("/^\n*/", '', $log_data[$i])
+                            'stack' => $stack
                         );
                     }
                 }

@@ -3,6 +3,7 @@
 namespace Rap2hpoutre\LaravelLogViewer;
 
 use Illuminate\Support\Facades\Crypt;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 if (class_exists("\\Illuminate\\Routing\\Controller")) {	
     class BaseController extends \Illuminate\Routing\Controller {}	
@@ -82,7 +83,8 @@ class LogViewerController extends BaseController
             'current_file' => $this->log_viewer->getFileName(),
             'standardFormat' => true,
             'levels_classes' => $this->log_level->getLevelsClasses(),
-            'levels_counts' => $levels_counts
+            'levels_counts' => $levels_counts,
+            'current_level' => $filter['level'] ?? null
         ];
 
         if ($this->request->wantsJson()) {
@@ -113,7 +115,7 @@ class LogViewerController extends BaseController
             return $this->download($this->pathFromInput('dl'));
         } elseif ($this->request->has('clean')) {
             app('files')->put($this->pathFromInput('clean'), '');
-            return $this->redirect(url()->previous());
+            return $this->redirect($this->request->headers->get('referer'));
         } elseif ($this->request->has('del')) {
             app('files')->delete($this->pathFromInput('del'));
             return $this->redirect($this->request->url());
@@ -158,12 +160,10 @@ class LogViewerController extends BaseController
      */
     private function download($data)
     {
-        if (function_exists('response')) {
-            return response()->download($data);
-        }
-
-        // For laravel 4.2
-        return app('\Illuminate\Support\Facades\Response')->download($data);
+        header('Content-Type: text/plain');
+        header("Content-Transfer-Encoding: Binary");
+        header("Content-disposition: attachment; filename=\"" . basename($data) . "\"");
+        readfile($data);
     }
 
     /**

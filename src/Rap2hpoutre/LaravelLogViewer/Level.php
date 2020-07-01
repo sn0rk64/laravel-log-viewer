@@ -12,32 +12,32 @@ class Level
      * @var array
      */
     private $levels_classes = [
-        'debug' => 'info',
-        'info' => 'info',
-        'notice' => 'info',
-        'warning' => 'warning',
-        'error' => 'danger',
-        'critical' => 'danger',
-        'alert' => 'danger',
-        'emergency' => 'danger',
+        'debug'     => 'info',
+        'info'      => 'info',
+        'notice'    => 'info',
         'processed' => 'info',
-        'failed' => 'warning',
+        'warning'   => 'warning',
+        'failed'    => 'warning',
+        'error'     => 'danger',
+        'critical'  => 'danger',
+        'alert'     => 'danger',
+        'emergency' => 'danger',
     ];
 
     /**
      * @var array
      */
     private $levels_imgs = [
-        'debug' => 'info-circle',
-        'info' => 'info-circle',
-        'notice' => 'info-circle',
-        'warning' => 'exclamation-triangle',
-        'error' => 'exclamation-triangle',
-        'critical' => 'exclamation-triangle',
-        'alert' => 'exclamation-triangle',
-        'emergency' => 'exclamation-triangle',
+        'debug'     => 'info-circle',
+        'info'      => 'info-circle',
+        'notice'    => 'info-circle',
         'processed' => 'info-circle',
-        'failed' => 'exclamation-triangle'
+        'warning'   => 'exclamation-triangle',
+        'error'     => 'exclamation-triangle',
+        'critical'  => 'exclamation-triangle',
+        'alert'     => 'exclamation-triangle',
+        'emergency' => 'exclamation-triangle',
+        'failed'    => 'exclamation-triangle',
     ];
 
     /**
@@ -68,7 +68,7 @@ class Level
 
     public function getLevelsClasses()
     {
-       return $this->levels_classes;
+        return $this->levels_classes;
     }
 
     public function getLevelsCounts($logs)
@@ -80,9 +80,11 @@ class Level
         }
 
         foreach ($logs as $log) {
-            $counts[$log['level']]++;
+            if (isset($log['level']) && in_array($log['level'], $this->all())) {
+                $counts[$log['level']]++;
+            }
         }
-        
+
         return $counts;
     }
 }

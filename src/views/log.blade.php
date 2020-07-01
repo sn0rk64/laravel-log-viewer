@@ -68,6 +68,7 @@
         }
         .filter-item {
             border: 1px solid rgb(206, 212, 218);
+            border-radius: 3.2px;
             padding: 10px 10px;
         }
 
@@ -180,6 +181,17 @@
                 <label class="custom-control-label" for="darkSwitch" style="margin-top: 6px;">Dark Mode</label>
             </div>
 
+            <div>
+                <select class="custom-select mb-2" onchange="runLevelFilter(event)">
+                    <option value="" selected>Level filter</option>
+                    @foreach ($levels_classes as $level => $class)
+                        <option value="{{ $level }}" class="text-{{ $class }}" @if($current_level === $level) selected @endif>
+                            {{ $level }} ({{ $levels_counts[$level] }})
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+
             <div class="list-group div-scroll">
                 @foreach($folders as $folder)
                     <div class="list-group-item">
@@ -207,16 +219,6 @@
             </div>
         </div>
         <div class="col-10 table-container">
-            <div class="container mb-5">
-                <div class="filter-item">
-                    Filter by level:
-                    @foreach ($levels_classes as $level => $class)
-                        <button class="btn btn-{{$class}}" onclick="runLevelFilter('{{ $level }}')">
-                            {{ $level }} ({{ $levels_counts[$level] }})
-                        </button>
-                    @endforeach
-                </div>
-            </div>
             @if ($logs === null)
                 <div>
                     Log file >50M, please download it.
@@ -232,7 +234,7 @@
                         @else
                             <th>Line number</th>
                         @endif
-                        <th>Content</th>
+                        <th style="width: 70%">Content</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -254,7 +256,7 @@
                                         <span class="fa fa-search"></span>
                                     </button>
                                 @endif
-                                {{{$log['text']}}}
+                                {!! $log['text'] !!}
                                 @if (isset($log['in_file']))
                                     <br/>{{{$log['in_file']}}}
                                 @endif
@@ -308,11 +310,17 @@
 <script type="text/javascript" src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap4.min.js"></script>
 
 <script>
+    function runLevelFilter(event) {
+        const level = event.target.value;
+        const urlParams = new URLSearchParams(window.location.search);
 
-    function runLevelFilter(level) {
-        var urlParams = new URLSearchParams(window.location.search);
-        urlParams.set('filter[level]', level);
-        window.location.search = urlParams.toString();
+        if (level.length === 0) {
+            urlParams.delete('filter[level]');
+            window.location.search = urlParams.toString();
+         } else {
+            urlParams.set('filter[level]', level);
+            window.location.search = urlParams.toString();
+        }
     }
 
     // dark mode by https://github.com/coliff/dark-mode-switch
