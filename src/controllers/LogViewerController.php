@@ -46,20 +46,6 @@ class LogViewerController extends BaseController
         $this->request = app('request');
     }
 
-    public function filterByLevel(array $logs, string $filter)
-    {
-        $c = count($logs);
-        for ($i = 0; $i < $c; $i++) {
-            if ($logs[$i]['level'] === $filter) {
-                continue;
-            }
-
-            unset($logs[$i]);
-        }
-
-        return $logs;
-    }
-
     /**
      * @return array|mixed
      * @throws \Exception
@@ -178,5 +164,24 @@ class LogViewerController extends BaseController
 
         // For laravel 4.2
         return app('\Illuminate\Support\Facades\Response')->download($data);
+    }
+
+    /**
+     * @param array $logs
+     * @param string $filter
+     * @return array
+     */
+    private function filterByLevel($logs, $filter)
+    {
+        $c = count($logs);
+        for ($i = 0; $i < $c; $i++) {
+            if ($logs[$i]['level'] === $filter) {
+                continue;
+            }
+
+            unset($logs[$i]);
+        }
+
+        return $logs;
     }
 }
