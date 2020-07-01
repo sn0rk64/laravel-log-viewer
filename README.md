@@ -1,22 +1,24 @@
 Laravel log viewer
 ==================
 
-[![Packagist](https://img.shields.io/packagist/v/rap2hpoutre/laravel-log-viewer.svg)](https://packagist.org/packages/rap2hpoutre/laravel-log-viewer)
-[![Packagist](https://img.shields.io/packagist/l/rap2hpoutre/laravel-log-viewer.svg)](https://packagist.org/packages/rap2hpoutre/laravel-log-viewer) 
-[![Packagist](https://img.shields.io/packagist/dm/rap2hpoutre/laravel-log-viewer.svg)](https://packagist.org/packages/rap2hpoutre/laravel-log-viewer) 
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/rap2hpoutre/laravel-log-viewer/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/rap2hpoutre/laravel-log-viewer/?branch=master) 
-[![Build Status](https://scrutinizer-ci.com/g/rap2hpoutre/laravel-log-viewer/badges/build.png?b=master)](https://scrutinizer-ci.com/g/rap2hpoutre/laravel-log-viewer/build-status/master)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/7be7a05b07c94f319ec35f95a4d64074)](https://www.codacy.com/app/rap2hpoutre/laravel-log-viewer)
-[![Author](https://img.shields.io/badge/author-@rap2h-blue.svg)](https://twitter.com/rap2h)
-
-
 ## TL;DR
-Log Viewer for Laravel 5, 6 & 7 (still compatible with 4.2 too) and Lumen. **Install with composer, create a route to `LogViewerController`**. No public assets, no vendor routes, works with and/or without log rotate. Inspired by Micheal Mand's [Laravel 4 log viewer](https://github.com/mikemand/logviewer) (works only with laravel 4.1)
+No public assets, no vendor routes, works with and/or without log rotate. Modification of [rap2hpoutre/laravel-log-viewer](https://github.com/rap2hpoutre/laravel-log-viewer.)
 
 ## What ?
 Small log viewer for laravel. Looks like this:
 
-![capture d ecran 2014-12-01 a 10 37 18](https://cloud.githubusercontent.com/assets/1575946/5243642/8a00b83a-7946-11e4-8bad-5c705f328bcc.png)
+![demo page](https://i.imgur.com/RxZDEC6.png)
+
+## The diffinces from main package
+* Log level filters
+
+<p align="left"><img src="https://i.imgur.com/fWrgLVL.png" width="260" height="349"></p>
+
+* Pretty json browsing
+
+![demo page](https://i.imgur.com/R8ENQAs.png)
+
+* Fully lumen support
 
 ## Install (Laravel)
 Install via composer
