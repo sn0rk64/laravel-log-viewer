@@ -5,10 +5,10 @@ namespace Rap2hpoutre\LaravelLogViewer;
 use Illuminate\Support\Facades\Crypt;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
-if (class_exists("\\Illuminate\\Routing\\Controller")) {	
-    class BaseController extends \Illuminate\Routing\Controller {}	
-} elseif (class_exists("Laravel\\Lumen\\Routing\\Controller")) {	
-    class BaseController extends \Laravel\Lumen\Routing\Controller {}	
+if (class_exists("\\Illuminate\\Routing\\Controller")) {
+    class BaseController extends \Illuminate\Routing\Controller {}
+} elseif (class_exists("Laravel\\Lumen\\Routing\\Controller")) {
+    class BaseController extends \Laravel\Lumen\Routing\Controller {}
 }
 
 /**
@@ -53,8 +53,6 @@ class LogViewerController extends BaseController
      */
     public function index()
     {
-        $logs = $this->log_viewer->all();
-        $levels_counts = $this->log_level->getLevelsCounts($logs);
         $folderFiles = [];
 
         if ($this->request->input('f')) {
@@ -64,6 +62,10 @@ class LogViewerController extends BaseController
         if ($this->request->input('l')) {
             $this->log_viewer->setFile(Crypt::decrypt($this->request->input('l')));
         }
+
+        $logs = $this->log_viewer->all();
+        $levels_counts = $this->log_level->getLevelsCounts($logs);
+
         if ($filter = $this->request->input('filter')) {
             if (array_key_exists('level', $filter)) {
                 $logs = $this->filterByLevel($logs, $filter['level']);
